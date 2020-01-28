@@ -1,0 +1,19 @@
+#Phone configuration file.
+
+#Enable need of permission to use the phone (false - default):
+enablePermission: false
+#Permission to use the phone:
+permission: "phone.use"
+
+#Phone number format:
+phoneNumberFormat: "XXX-XXX-XXX"
+
+#Reserved phone numbers:
+#TODO: MUST ADD
+
+#Enable ChestCommands "Other" button:
+enableChestCommands: true
+#ChestCommands YML file that you want to open:
+ChestCommandsYML: "something.yml"
+
+

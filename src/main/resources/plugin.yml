@@ -1,0 +1,10 @@
+name: Phone
+version: ${project.version}
+main: me.linckode.phones.Main
+prefix: Phones
+authors: [LINCKODE]
+description: Phone
+depend: [G-API]
+commands:
+  phone:
+    description: "Open the phone."
