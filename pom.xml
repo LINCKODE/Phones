@@ -71,7 +71,7 @@
         <dependency>
             <groupId>me.linckode</groupId>
             <artifactId>G-API</artifactId>
-            <version>1.0.3r1</version>
+            <version>1.0.3r2</version>
         </dependency>
     </dependencies>
 </project>

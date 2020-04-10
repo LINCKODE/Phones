@@ -7,4 +7,4 @@ description: Phone
 depend: [G-API]
 commands:
   phone:
-    description: "Open the phone."
+    description: "Get the phone."

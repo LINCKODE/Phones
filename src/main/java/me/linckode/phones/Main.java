@@ -3,6 +3,7 @@ package me.linckode.phones;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,18 +14,26 @@ import java.util.UUID;
 public final class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
-
     public static Main getInstance() {
         return instance;
     }
-
+    public static ArrayList<ActionLinker> actionLinkers = new ArrayList<>();
+    public static ArrayList<PhoneNumber> PhoneNumberList = new ArrayList<>();
+    public static ArrayList<ContactsList> contactsLists = new ArrayList<>();
     void getAllNumbers(){
         Thread thread = new Thread(() -> {
-            File folder = new File(getDataFolder() + File.separator + "players");
-            for (final File file : folder.listFiles()) {
-                allPhoneNumberList.add(Config.getString(file, "phoneNumber"));
+            try{
+                File folder = new File(getDataFolder() + File.separator + "players");
+                for (final File file : folder.listFiles()) {
+                    String number = Config.getString(file, "phoneNumber");
+                    allPhoneNumberList.add(number);
+                    PhoneNumberList.add(new PhoneNumber(UUID.fromString(file.getName().replace(".yml", "")),number));
+                }
+                this.getLogger().info("Successfully retrieved " + allPhoneNumberList.size() + " phone numbers!");
             }
-            this.getLogger().info("Successfully retrieved " + allPhoneNumberList.size() + " phone numbers!");
+            catch (NullPointerException e){
+                this.getLogger().warning("No phone numbers found!");
+            }
         });
 
         thread.start();
@@ -34,6 +43,7 @@ public final class Main extends JavaPlugin implements Listener {
     public static File configFile;
     public static boolean enablePermissions;
     public static String permission;
+    public static String managePermission;
     public static boolean enableChestCommands;
     public static String ChestCommandYML;
     public static String phoneNumberFormat;
@@ -43,7 +53,7 @@ public final class Main extends JavaPlugin implements Listener {
     public static ArrayList<String> allPhoneNumberList = new ArrayList<>();
     public static ArrayList<UUID> UUIDList = new ArrayList<>();
     public static ArrayList<String> literalPhoneNumberList = new ArrayList<>();
-    public static ArrayList<PhoneNumber> PhoneNumberList = new ArrayList<>();
+
 
     //Antenna stuff
     public static ArrayList<Antenna> antennas = new ArrayList<>();
@@ -51,17 +61,17 @@ public final class Main extends JavaPlugin implements Listener {
         Thread thread = new Thread(() -> {
 
             File folder = new File(getDataFolder() + File.separator + "antennas");
-            for (final File file : folder.listFiles()) {
-                World antennaWorld = Bukkit.getWorld(Config.getString(file, "world"));
-                double antennaX = Config.getDouble(file, "x");
-                double antennaY = Config.getDouble(file, "y");
-                double antennaZ = Config.getDouble(file, "z");
-                int antennaStrength = Config.getInt(file, "strength");
-                int antennaId = Config.getInt(file, "id");
-                Location antennaLocation = new Location(antennaWorld, antennaX, antennaY, antennaZ);
-                antennas.add(new Antenna(antennaLocation, antennaStrength, antennaId));
+            try {
+                for (final File file : folder.listFiles()) {
+
+                    antennas.add(Antenna.loadFromConfig(Integer.parseInt(file.getName().replace(".yml",""))));
+                }
+                this.getLogger().info("Successfully retrieved " + antennas.size() + " antennas!");
             }
-            this.getLogger().info("Successfully retrieved " + antennas.size() + " antennas!");
+            catch (NullPointerException e){
+                this.getLogger().warning("No antennas found!");
+            }
+
         });
 
         thread.start();
@@ -77,6 +87,7 @@ public final class Main extends JavaPlugin implements Listener {
         enableChestCommands = Config.getBool(configFile, "enableChestCommands");
         ChestCommandYML = Config.getString(configFile, "ChestCommandsYML");
         phoneNumberFormat = Config.getString(configFile, "phoneNumberFormat");
+        managePermission = Config.getString(configFile, "managePermission");
 
     }
 

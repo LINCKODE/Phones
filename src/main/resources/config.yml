@@ -5,6 +5,9 @@ enablePermission: false
 #Permission to use the phone:
 permission: "phone.use"
 
+#Permission to manage the plugin:
+managePermission: "phone.manage"
+
 #Phone number format:
 phoneNumberFormat: "XXX-XXX-XXX"
 

@@ -15,7 +15,7 @@ public class PhoneNumber {
          return number;
      }
 
-    PhoneNumber(UUID uuid, String number){
+    public PhoneNumber(UUID uuid, String number){
         this.uuid = uuid;
         this.number = number;
 
